@@ -3,7 +3,7 @@ package com.irwin.order_api.entity;
 import jakarta.persistence.*;
 
 @Entity
-public class OrderLine {
+public class OrderLine  extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", nullable = false)

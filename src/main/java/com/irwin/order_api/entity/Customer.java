@@ -1,11 +1,13 @@
 package com.irwin.order_api.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.context.annotation.Lazy;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Entity
 public class Customer extends BaseEntity {
@@ -19,6 +21,15 @@ public class Customer extends BaseEntity {
 
     @OneToMany (mappedBy = "customer", fetch = FetchType.LAZY)
     private List<Order> orders = new ArrayList<>();
+
+    public Customer() {};
+
+    public Customer (String email, String firstName, String lastName) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
 
 
     public String getEmail() {

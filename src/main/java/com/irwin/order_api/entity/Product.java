@@ -39,5 +39,8 @@ public class Product extends  BaseEntity {
         this.price = newPrice;
     }
 
+    public double getPrice() {
+        return this.price;
+    }
 
 }
