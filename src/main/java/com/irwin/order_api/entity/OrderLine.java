@@ -1,31 +1,28 @@
 package com.irwin.order_api.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
-@Setter
-@Getter
-public class OrderLine extends BaseEntity {
+public class OrderLine {
 
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", nullable = false)
-    @NotNull
     private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="product_id", nullable = false)
-    @NotNull
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     private double quantity;
 
-    public double calculateLineAmount() {
-        return this.product.getPrice() * quantity;
+     OrderLine(Order order, Product product, double quantity) {
+        this.product = product;
+        this.quantity = quantity;
+         this.order = order;
     }
 
 
+    double calculateLineAmount() {
+        return this.product.getPrice() * quantity;
+    }
 }

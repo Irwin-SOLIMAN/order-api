@@ -2,10 +2,14 @@ package com.irwin.order_api.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 public class Order extends BaseEntity {
 
@@ -24,19 +28,31 @@ public class Order extends BaseEntity {
     private List<OrderLine> orderLines = new ArrayList<>();
 
 
-    public void addOrderLine(OrderLine lineToAdd) {
-        this.checkOrderStatus();
-        lineToAdd.setOrder(this);
-        this.orderLines.add(lineToAdd);
+    public void addOrderLine(Product product, double quantity) {
+        checkOrderStatus();
+
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be positive");
+        }
+
+        OrderLine line = new OrderLine(this, product, quantity );
+
+        this.orderLines.add(line);
     }
+
 
     public void removeOrderLine(OrderLine lineToRemove) {
-        this.checkOrderStatus();
-        lineToRemove.setOrder(this);
+        checkOrderStatus();
+
+        if (!this.orderLines.contains(lineToRemove)) {
+            throw new IllegalArgumentException("OrderLine does not belong to this Order");
+        }
+
         this.orderLines.remove(lineToRemove);
+
     }
 
-    public double calculateTotalAount() {
+    public double calculateTotalAmount() {
         return orderLines.stream().mapToDouble(orderLine -> orderLine.calculateLineAmount()).sum();
     }
 
