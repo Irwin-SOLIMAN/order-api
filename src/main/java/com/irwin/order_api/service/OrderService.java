@@ -11,6 +11,9 @@ import com.irwin.order_api.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.UUID;
+
 @Service
 @Transactional
 public class OrderService {
@@ -54,6 +57,15 @@ public class OrderService {
 
 
         return order;
+    }
+
+
+    public List<Order> getOrders() {
+        return orderRepository.findAll();
+    }
+
+    public Order getOrderById(UUID id) {
+        return orderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Order with ID " + id + " not found"));
     }
 
     private String generateReference() {
